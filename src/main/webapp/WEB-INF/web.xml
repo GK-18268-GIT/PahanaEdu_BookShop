@@ -1,0 +1,68 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Pahana Edu</display-name>
+  
+  <servlet>
+  		<servlet-name>AdminServlet</servlet-name>
+  		<display-name>AdminServlet</display-name>
+  		<description></description>
+  		<servlet-class>com.system.controller.AdminServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  		<servlet-name>CustomerServlet</servlet-name>
+  		<display-name>CustomerServlet</display-name>
+  		<description></description>
+  		<servlet-class>com.system.controller.CustomerServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  		<servlet-name>ManageItemServlet</servlet-name>
+  		<display-name>manageItemServlet</display-name>
+  		<description></description>
+  		<servlet-class>com.system.controller.ManageItemServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  		<servlet-name>CartServlet</servlet-name>
+  		<display-name>cartServlet</display-name>
+  		<description></description>
+  		<servlet-class>com.system.controller.CartServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  		<servlet-name>PaymentServlet</servlet-name>
+  		<display-name>PaymentServlet</display-name>
+  		<description></description>
+  		<servlet-class>com.system.controller.PaymentServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  		<servlet-name>AdminServlet</servlet-name>
+  		<url-pattern>/AdminServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  		<servlet-name>CustomerServlet</servlet-name>
+  		<url-pattern>/CustomerServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  		<servlet-name>ManageItemServlet</servlet-name>
+  		<url-pattern>/ManageItemServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  		<servlet-name>PaymentServlet</servlet-name>
+  		<url-pattern>/PaymentServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  		<servlet-name>CartServlet</servlet-name>
+  		<url-pattern>/CartServlet</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
