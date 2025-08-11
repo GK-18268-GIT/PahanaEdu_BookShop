@@ -81,20 +81,16 @@ public class CartServlet extends HttpServlet {
         String itemId = request.getParameter("itemId");
         int quantity = 1;
         
-        try {
-            quantity = Integer.parseInt(request.getParameter("quantity"));
-            if(quantity < 1) {
-                throw new NumberFormatException();
-            }
-        } catch(NumberFormatException e) {
-            handleError(request, response, "Invalid quantity value!");
-            return;
-        }
-        
         ManageItem item = manageItemDao.getItemById(itemId);
         if(item == null) {
             handleError(request, response, "Item not found!");
             return;
+        }
+        
+        if(item.getStockQty() <= 0) {
+        	request.getSession().setAttribute("error", "Item is out of stocl!");
+        	response.sendRedirect(request.getContextPath() + "/ManageItemServlet?action=inStock");
+        	return;
         }
         
         HttpSession session = request.getSession();

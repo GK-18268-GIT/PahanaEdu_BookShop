@@ -12,6 +12,13 @@ import java.sql.Timestamp;
 
 public class ManageItemDao {
     public boolean addNewItem(ManageItem manageItem) throws Exception {
+    	
+    	if(manageItem.getStockQty() > 0) {
+    		manageItem.setStatus("inStock");
+    	} else {
+    		manageItem.setStatus("outStock");
+    	}
+    	
         String query = "INSERT INTO items(itemId, itemName, itemDescription, category, unitPrice, stockQty, itemImage, status, "
                 + "createdAt)"
                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
@@ -41,6 +48,13 @@ public class ManageItemDao {
     }
     
     public boolean updateItem(ManageItem manageItem) throws Exception {
+    	
+    	if(manageItem.getStockQty() > 0) {
+    		manageItem.setStatus("inStock");
+    	} else {
+    		manageItem.setStatus("outStock");
+    	}
+    	
         String query = "UPDATE items SET itemName = ?, itemDescription = ?, category = ?, unitPrice = ?, stockQty = ?, itemImage = ?, "
                 + "status = ?, updatedAt = ? WHERE itemId = ?";
         

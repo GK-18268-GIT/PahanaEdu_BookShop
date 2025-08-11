@@ -27,8 +27,8 @@
 			<form action = "AdminServlet" method = "post" class = "signup-form">
 			<input type ="hidden" name ="action" value ="login">
 				<div class = "input-box">
-					<label for = "username" class = "signup-label">UserName</label>
-					<input type = "text" id = "username" name = "username" placeholder = "Enter your username" required>
+					<label for = "username" class = "signup-label">Email</label>
+					<input type = "text" id = "email" name = "email" placeholder = "Enter your email" required>
 				</div>
 				
 				<div class = "input-box">

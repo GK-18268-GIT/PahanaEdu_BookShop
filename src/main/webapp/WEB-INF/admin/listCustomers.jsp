@@ -1,37 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Customer List</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/listItems.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pahana Edu Bookshop - Customer List</title>
+    <link rel="stylesheet" href="<c:url value='/css/listCustomer.css'/>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f4f4f4;
-            font-weight: 600;
-        }
-        tr:hover {
-            background-color: #f9f9f9;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">    
 </head>
 <body>
     <div class="container">
@@ -52,7 +32,7 @@
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Address</th>
-                    <th>Account #</th>
+                    <th>Account Number</th>
                     <th>Joined Date</th>
                 </tr>
             </thead>
@@ -65,7 +45,9 @@
                         <td>${customer.phoneNumber}</td>
                         <td>${customer.address}</td>
                         <td>${customer.accountNumber}</td>
-                        <td>${customer.createdAt}</td>
+                        <td><fmt:formatDate value="${customer.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td class="action-buttons"><a href="${pageContext.request.contextPath}/CustomerServlet?action=edit&customerId=${customer.customerId}" 
+                        	class="edit-btn">Edit</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

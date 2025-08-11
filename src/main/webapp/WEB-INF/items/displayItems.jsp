@@ -5,91 +5,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Pahana Edu Bookshop - Item Store</title>
-    <style>
-        body {
-            font-family: 'Nunito Sans', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #00796b;
-            color: white;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        .item-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        .item-card {
-            border: 1px solid #ddd;
-            padding: 15px;
-            width: 250px;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .item-image {
-            max-width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 3px;
-        }
-        .image-caption {
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f0f0f0;
-            border-radius: 3px;
-        }
-        .in-stock {
-            color: green;
-            font-weight: bold;
-        }
-        .out-stock {
-            color: red;
-            font-weight: bold;
-        }
-        .add-to-cart-form {
-            margin-top: 10px;
-        }
-        .quantity-input {
-            width: 60px;
-            padding: 5px;
-            margin-right: 5px;
-        }
-        .add-to-cart {
-            background-color: #00796b;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .add-to-cart:hover {
-            background-color: #004d40;
-        }
-        .view-cart {
-            color: white;
-            text-decoration: none;
-            background: #ff6f00;
-            padding: 5px 10px;
-            border-radius: 3px;
-        }
-        .view-cart:hover {
-            background: #e65100;
-        }
-    </style>
-	</head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pahana Edu Bookshop - Items Store</title>
+    <link rel="stylesheet" href="<c:url value='/css/displayItems.css'/>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>    
 <body>
     <c:if test="${not empty sessionScope.successMessage}">
         <script>
@@ -130,23 +53,24 @@
                     <div class="unitPrice">
                         Price: <fmt:formatNumber value="${item.unitPrice}" type="currency"/>
                     </div>
-                    <div class="stock ${item.status eq 'inStock' ? 'in-stock' : 'out-stock'}">
-                        ${item.status eq 'inStock' ? 'In Stock (' += item.stockQty += ' available)' : 'Out of Stock'}
-                    </div>
+                    <div class="stock ${item.stockQty > 0 ? 'in-stock' : 'out-stock'}">
+    					${item.stockQty > 0 ? 'In Stock (' += item.stockQty += ' available)' : 'Out of Stock'}
+					</div>
                     
                     <c:if test="${item.status eq 'inStock'}">
                         <form class="add-to-cart-form" 
-                              action="${pageContext.request.contextPath}/CartServlet" 
-                              method="post">
+                              action="${pageContext.request.contextPath}/CartServlet" method="post">
                             <input type="hidden" name="action" value="addItem">
                             <input type="hidden" name="itemId" value="${item.itemId}">
-                            <label>Quantity:
-                                <input type="number" name="quantity" value="1" min="1" 
-                                       max="${item.stockQty}" class="quantity-input" required>
-                            </label>
+                  
                             <button type="submit" class="add-to-cart">Add to Cart</button>
                         </form>
                     </c:if>
+                    
+                    <c:if test="${item.stockQty <= 0}">
+    					<button class="add-to-cart" disabled>Out of Stock</button>
+					</c:if>
+                    
                 </div>
             </div>
         </c:forEach>

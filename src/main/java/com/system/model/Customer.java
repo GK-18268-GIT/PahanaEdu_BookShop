@@ -2,33 +2,40 @@ package com.system.model;
 
 import java.sql.Timestamp;
 
-public class Customer {
+public class Customer extends User {
     private String customerId;
     private String firstName;
     private String lastName;
     private String profileImage;
     private String address;
-    private String email;
     private String phoneNumber;
     private String accountNumber;
-    private String password;
     private Timestamp createdAt;
+    private Timestamp updatedAt;
     
     public Customer(String customerId, String firstName, String lastName, String profileImage, String address, 
-            String email, String phoneNumber, String accountNumber, String password, Timestamp createdAt) {
+            String email, String phoneNumber, String accountNumber, String password, Timestamp createdAt, Timestamp updatedAt) {
+    	super(email, password);
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profileImage = profileImage;
         this.address = address;
-        this.email = email;
         this.phoneNumber = phoneNumber;
         this.accountNumber = accountNumber;
-        this.password = password;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public String getCustomerId() {
+    public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getCustomerId() {
         return customerId;
     }
 
@@ -68,14 +75,6 @@ public class Customer {
         this.address = address;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -90,14 +89,6 @@ public class Customer {
     
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Timestamp getCreatedAt() {

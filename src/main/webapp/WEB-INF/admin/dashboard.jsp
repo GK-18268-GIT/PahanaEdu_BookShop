@@ -92,11 +92,11 @@
                 <img src="${pageContext.request.contextPath}/assets/manage_items.jpg" alt="Manage Items">
                 Manage Items
             </a>
-            <a href="${pageContext.request.contextPath}/CustomerServlet?action=list" class="button">
+            <a href="#" class="button">
                 <img src="${pageContext.request.contextPath}/assets/view_customer_data.jpg" alt="View Account">
                 Display account details
             </a>
-            <a href="#" class="button">
+            <a href="${pageContext.request.contextPath}/CustomerServlet?action=list" class="button">
                 <img src="${pageContext.request.contextPath}/assets/edit_customer_data.jpg" alt="Edit Customer">
                 Edit customer data
             </a>

@@ -5,6 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import java.sql.Timestamp;
+
+
 import com.system.db.CustomerDao;
 import com.system.db.AdminDao;
 import com.system.model.Customer;
@@ -56,6 +59,9 @@ public class CustomerServlet extends HttpServlet {
                 case "list":
                     listCustomers(request, response);
                     break;
+                case "edit":
+                	showEditForm(request, response);
+                	break;
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action!");
             }
@@ -77,6 +83,9 @@ public class CustomerServlet extends HttpServlet {
                 case "login":
                     loginCustomer(request, response);
                     break;
+                case "update":
+                	updateCustomer(request, response);
+                	break;
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action!");
             }
@@ -100,6 +109,11 @@ public class CustomerServlet extends HttpServlet {
             if(customer != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("customer", customer);
+                
+                System.out.println("[DEBUG] Login Credentials: ");
+                System.out.println("[DEBUG] Email: " + customer.getEmail());
+                System.out.println("[DEBUG] Password: " + customer.getPassword());
+                
                 response.sendRedirect(request.getContextPath() + "/ManageItemServlet?action=inStock");
             } else {
                 request.setAttribute("errorMessage", "Invalid email or password!");
@@ -122,6 +136,54 @@ public class CustomerServlet extends HttpServlet {
         List<Customer> customers = customerDao.getAllCustomers();
         request.setAttribute("customers", customers);
         request.getRequestDispatcher("/WEB-INF/admin/listCustomers.jsp").forward(request, response);
+    }
+    
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	String customerId = request.getParameter("customerId");
+    	if(customerId == null || customerId.isEmpty()) {
+    		handleError(request, response, "Missing Customer Id!");
+    	}
+    	
+    	Customer customer = customerDao.getCustomerById(customerId);
+    	if(customer == null) {
+    		handleError(request, response, "Customer not found");
+    	}
+    	
+    	request.setAttribute("customer", customer);
+    	request.getRequestDispatcher("/WEB-INF/admin/editCustomerData.jsp").forward(request, response);
+    }
+    
+    private void updateCustomer(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	String customerId = request.getParameter("customerId");
+    	if(customerId == null || customerId.isEmpty()) {
+    		handleError(request, response, "Missing customer Id!");
+    	}
+    	
+    	String firstName = request.getParameter("firstName");
+    	String lastName = request.getParameter("lastName");
+    	String email = request.getParameter("email");
+    	String phoneNumber = request.getParameter("phoneNumber");
+    	String address = request.getParameter("address");
+    	Timestamp updatedAt = new Timestamp(System.currentTimeMillis());
+    	
+    	Customer customer = customerDao.getCustomerById(customerId);
+    	if(customer == null) {
+    		handleError(request, response, "Customer not found!");
+    	}
+    	
+    	customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.setEmail(email);
+        customer.setPhoneNumber(phoneNumber);
+        customer.setAddress(address);
+        customer.setUpdatedAt(updatedAt);
+        
+        if(customerDao.updateCustomer(customer)) {
+        	response.sendRedirect("CustomerServlet?action=list&success=Customer+updated+successfully");
+        } else {
+        	handleError(request, response, "Failed to update customer!");
+        }
+    	
     }
     
     private String hashPassword(String password) {

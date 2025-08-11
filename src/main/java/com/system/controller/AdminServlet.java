@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import com.system.db.AdminDao;
 import com.system.model.Customer;
+import com.system.model.Admin;
 //import com.system.util.RegisterEmailConfirmation;
 
 
@@ -57,13 +58,13 @@ public class AdminServlet extends HttpServlet {
 		
 		switch(action) {
 			case "index" :
-				request.getRequestDispatcher("/WEB-INF/users/login.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/users/adminLogin.jsp").forward(request, response);
 				break;
 			case "login" :
-				request.getRequestDispatcher("/WEB-INF/users/login.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/users/adminLogin.jsp").forward(request, response);
 				break;
 			case "register" :
-				request.getRequestDispatcher("/WEB-INF/users/register.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/users/customerRegister.jsp").forward(request, response);
 				break;
 			default:
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action!");
@@ -94,7 +95,7 @@ public class AdminServlet extends HttpServlet {
 		} catch(Exception e) {
 			e.printStackTrace();
 			System.out.println("[Error] An error occured while processing. please try again!");
-			request.getRequestDispatcher("/WEB-INF/users/login.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/users/adminLogin.jsp").forward(request, response);
 		}
 		
 	}
@@ -127,29 +128,28 @@ public class AdminServlet extends HttpServlet {
         
         if(!password.equals(confirmPassword)) {
             request.setAttribute("error", "Passwords do not match!");
-            request.getRequestDispatcher("/WEB-INF/users/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/users/customerRegister.jsp").forward(request, response);
             return;
         }
         
         if(!password.matches(passwordPattern)) {
             request.setAttribute("error", "Password must contain at least one number, one uppercase and lowercase letter, and at least 8 characters!");
-            request.getRequestDispatcher("/WEB-INF/users/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/users/customerRegister.jsp").forward(request, response);
             return;
         }
         
         String hashedPassword = hashPassword(password);
         
-        Customer customer = new Customer(null, firstName, lastName, profileImage, address, email, phoneNumber, null, hashedPassword, null);
+        Customer customer = new Customer(null, firstName, lastName, profileImage, address, email, phoneNumber, null, hashedPassword, null, null);
         
         boolean success = adminDao.addNewCustomer(customer);
         if(!success) {
             request.setAttribute("error", "Registration failed. Please try again!");
-            request.getRequestDispatcher("/WEB-INF/users/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/users/customerRegister.jsp").forward(request, response);
             return;
         }
         
-        request.setAttribute("success", "Customer registered successfully!");
-        request.getRequestDispatcher("/WEB-INF/users/register.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/CustomerServlet?action=list&success=Customer+registered+successfully");
 		
 		System.out.println("[DEBUG] Received Parameters:");
 		System.out.println("[DEBUG] First name: " + firstName);
@@ -160,12 +160,14 @@ public class AdminServlet extends HttpServlet {
 	}
 	
 	private void authenticateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String username = request.getParameter("username");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		if("admin".equals(username) && "password".equals(password)) {
+		Admin admin = new Admin("admin123@gmail.com", "password");
+		
+		if(admin.getEmail().equals(email) && admin.getPassword().equals(password)) {
 			HttpSession session = request.getSession();
-			session.setAttribute("user", username);
+			session.setAttribute("user", email);
 			session.setAttribute("userRole", "admin");
 			request.getRequestDispatcher("/WEB-INF/admin/dashboard.jsp").forward(request, response);
 			return;

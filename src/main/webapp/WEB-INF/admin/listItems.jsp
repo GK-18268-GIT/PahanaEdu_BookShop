@@ -53,7 +53,7 @@
                         <td>${item.category}</td>
                         <td>$${item.unitPrice}</td>
                         <td>${item.stockQty}</td>
-                        <td>${item.status}</td>
+                        <td>${item.stockQty > 0 ? 'In Stock' : 'Out of Stock'}</td>
                         <td class="actions">
                             <a href="ManageItemServlet?action=edit&itemId=${item.itemId}" 
                                class="btn-edit">Edit</a>

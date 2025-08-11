@@ -134,7 +134,6 @@ public class ManageItemServlet extends HttpServlet {
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
-        // Parse multipart request
         ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
         List<FileItem> items = upload.parseRequest(request);
         String fileName = "";
@@ -165,12 +164,22 @@ public class ManageItemServlet extends HttpServlet {
     	}
     	
     	String stockQtyStr = data.get("stockQty");
+    	int stockQty = 0;
     	try {
-    		item.setStockQty((stockQtyStr != null && !stockQtyStr.isEmpty()) ? Integer.parseInt(stockQtyStr) : 0);
+    		stockQty = (stockQtyStr != null && !stockQtyStr.isEmpty()) ? Integer.parseInt(stockQtyStr) : 0;
     	} catch(NumberFormatException e) {
-    		item.setStockQty(0);
+    		stockQty = 0;
     	}
-    	item.setStatus(data.get("status"));
+    	
+    	item.setStockQty(stockQty);
+    	
+    	if(stockQty > 0) {
+    		item.setStatus("inStock");
+    	} else {
+    		item.setStatus("outStock");
+    	}
+    	
+    	
     	
     }
     

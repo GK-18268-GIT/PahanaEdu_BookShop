@@ -5,99 +5,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Invoice</title>
-    <style>
-        body {
-            font-family: 'Nunito Sans', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .invoice-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #00796b;
-            padding-bottom: 20px;
-        }
-        .invoice-title {
-            color: #00796b;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .invoice-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-        .detail-box {
-            flex: 1;
-        }
-        .detail-box:first-child {
-            margin-right: 20px;
-        }
-        .detail-label {
-            font-weight: bold;
-            color: #00796b;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #00796b;
-            color: white;
-        }
-        .total-row {
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        .total-cell {
-            text-align: right;
-            padding-right: 20px;
-        }
-        .payment-info {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #00796b;
-        }
-        .actions {
-            text-align: center;
-            margin-top: 30px;
-        }
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 1em;
-            display: inline-block;
-            margin: 0 10px;
-        }
-        .print-btn {
-            background-color: #00796b;
-            color: white;
-        }
-        .home-btn {
-            background-color: #ff6f00;
-            color: white;
-        }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pahana Edu Bookshop - Invoice</title>
+    <link rel="stylesheet" href="<c:url value='/css/invoice.css'/>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
 </head>
 <body>
     <div class="invoice-container">
