@@ -12,11 +12,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+<style>
+        .back-to-menu {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            width: fit-content;
+        }
+        
+        .back-to-menu:hover {
+            background-color: #45a049;
+        }
+    </style>
 <body>
     <div class="update-container">
         <div class="update-wrapper">
             <div class="update-leftside">
-                <img src="${pageContext.request.contextPath}/assets/avatar.png" alt="">
+                <img src="${pageContext.request.contextPath}/assets/pahanaEdu_logo.png" alt="">
                 <h2 class="title">Update The Item</h2>
                 <p class="subtitle">Enter Details To update Item</p>
             </div>
@@ -41,9 +59,9 @@
                     <label for="category">Category: </label>
                     <select id="category" name="category" required>
                         <option value="">Select Category</option>
-                        <option value="stationery" ${item.category == 'stationery' ? 'selected' : ''}>Stationery</option>
+                        <option value="educational" ${item.category == 'educational' ? 'selected' : ''}>Educational</option>
                         <option value="textBooks" ${item.category == 'textBooks' ? 'selected' : ''}>Text Books</option>
-                        <option value="accessories" ${item.category == 'accessories' ? 'selected' : ''}>Accessories</option>
+                        <option value="novel" ${item.category == 'novel' ? 'selected' : ''}>Novel</option>
                     </select>
                 </div>
                 <div class="input-box">
@@ -63,6 +81,7 @@
                         <p>Current image: ${item.itemImage}</p>
                     </c:if>
                 </div>
+                <!--  
                 <div class="input-box">
                     <label for="status">Status</label>
                     <select id="status" name="status" required>
@@ -70,9 +89,13 @@
                         <option value="outStock" ${item.status == 'outStock' ? 'selected' : ''}>Out of Stock</option>
                     </select>
                 </div>
+                -->
                 <button type="submit" class="btn">Update Item</button> 
             </form>
         </div>
     </div>
+    <a href="${pageContext.request.contextPath}/ManageItemServlet?action=itemList" class="back-to-menu">
+        Back to List
+    </a>
 </body>
 </html>

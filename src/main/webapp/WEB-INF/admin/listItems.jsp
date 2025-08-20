@@ -11,6 +11,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .back-to-menu {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .back-to-menu:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -24,7 +40,12 @@
             <div class="error-message">${errorMessage}</div>
         </c:if>
         
-        <a href="ManageItemServlet?action=showAddForm" class="btn">Add New Item</a>
+        <div class="action-buttons">
+            <a href="ManageItemServlet?action=showAddForm" class="btn">Add New Item</a>
+            <a href="${pageContext.request.contextPath}/AdminServlet?action=dashboard" class="back-to-menu">
+                Back to Main Menu
+            </a>
+        </div>
         
         <table>
             <thead>
@@ -45,7 +66,7 @@
                         <td>
                             <c:if test="${not empty item.itemImage}">
                                 <img src="${pageContext.request.contextPath}/resources/itemUploads/${item.itemImage}"  
-     								alt="${item.itemName}" width="50">
+                                     alt="${item.itemName}" width="50">
                             </c:if>
                         </td>
                         <td>${item.itemName}</td>

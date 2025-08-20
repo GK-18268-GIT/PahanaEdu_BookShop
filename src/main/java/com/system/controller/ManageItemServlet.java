@@ -46,7 +46,7 @@ public class ManageItemServlet extends HttpServlet {
         
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String action = request.getParameter("action");
     	
     	if(action == null) {
@@ -125,7 +125,7 @@ public class ManageItemServlet extends HttpServlet {
     	
     }
     
-    private String handleFileUploads(HttpServletRequest request, HttpServletResponse response, Map<String, String> formData) throws Exception {
+    public String handleFileUploads(HttpServletRequest request, HttpServletResponse response, Map<String, String> formData) throws Exception {
     	if (!ServletFileUpload.isMultipartContent(request)) return "";
 
         String filePath = request.getServletContext().getRealPath("/");
@@ -151,7 +151,7 @@ public class ManageItemServlet extends HttpServlet {
         return fileName;
     }
     
-    private void itemFormData(ManageItem item, Map<String, String> data) {
+    public void itemFormData(ManageItem item, Map<String, String> data) {
     	item.setItemName(data.get("itemName"));
     	item.setItemDescription(data.get("itemDescription"));
     	item.setCategory(data.get("category"));
@@ -207,7 +207,7 @@ public class ManageItemServlet extends HttpServlet {
     	request.getRequestDispatcher("/WEB-INF/admin/updateItems.jsp").forward(request, response);
     }
 
-    private void addNewItems(HttpServletRequest request, HttpServletResponse response, Map<String, String> formData, String fileName) throws Exception {
+    public void addNewItems(HttpServletRequest request, HttpServletResponse response, Map<String, String> formData, String fileName) throws Exception {
 
         ManageItem item = new ManageItem();
         itemFormData(item, formData);
@@ -219,7 +219,7 @@ public class ManageItemServlet extends HttpServlet {
         
     }
 
-    private void updateItems(HttpServletRequest request, HttpServletResponse response, Map<String, String> formData, String newFileName) throws Exception {
+    public void updateItems(HttpServletRequest request, HttpServletResponse response, Map<String, String> formData, String newFileName) throws Exception {
     	
     	String itemId = formData.get("itemId");
     	if(itemId == null || itemId.isEmpty()) {
@@ -248,7 +248,7 @@ public class ManageItemServlet extends HttpServlet {
     	
       }
 
-	private void deleteItems(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void deleteItems(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	String itemId = request.getParameter("itemId");
         if(itemId == null || itemId.isEmpty()) {
             handleError(request, response, "Missing item ID!");
@@ -278,7 +278,7 @@ public class ManageItemServlet extends HttpServlet {
 	private void showInStockItems(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	 
     	 try {
-    		 List<ManageItem> inStockItems = manageItemDao.getInStockItems();
+    		 List<ManageItem> inStockItems = manageItemDao.getAllItems();
     		 request.setAttribute("itemList", inStockItems);
     		 
     		 request.getRequestDispatcher("/WEB-INF/items/displayItems.jsp").forward(request, response);

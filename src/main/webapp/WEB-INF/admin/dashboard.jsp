@@ -27,6 +27,7 @@
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         h2 {
@@ -75,11 +76,34 @@
             margin-bottom: 12px;
             object-fit: contain;
         }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 
 <body>
     <div class="dashboard-container">
+        <form action="AdminServlet" method="post">
+            <input type="hidden" name="action" value="logout">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+        
         <h2>Admin Dashboard</h2>
         <p>Welcome <%= session.getAttribute("user") %>!</p>
 
@@ -92,7 +116,7 @@
                 <img src="${pageContext.request.contextPath}/assets/manage_items.jpg" alt="Manage Items">
                 Manage Items
             </a>
-            <a href="#" class="button">
+            <a href="${pageContext.request.contextPath}/AdminServlet?action=accountDetails" class="button">
                 <img src="${pageContext.request.contextPath}/assets/view_customer_data.jpg" alt="View Account">
                 Display account details
             </a>

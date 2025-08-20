@@ -7,85 +7,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pahana Edu - Sign Up</title>
     
-	<link rel="stylesheet" href="<c:url value='/css/register.css'/>" >
+    <link rel="stylesheet" href="<c:url value='/css/customerRegister.css'/>" >
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .back-to-menu {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            width: fit-content;
+        }
+        
+        .back-to-menu:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
-	<div class = "register-container">
-		<div class = "register-wrapper">
-			<div class = "register-leftside">
-				<img src = "./assets/avatar.png" alt = ""></img>
-				<h2 class = "title">Welcome to Pahana Edu</h2>
-				<p class = "subtitle">Please, Register to continue</p>
-			</div>
-			<% if (session.getAttribute("errorMessage") != null) { %>
-				<p style = "color: red;"><%= session.getAttribute("errorMessage") %></p>
-				<% session.removeAttribute("errorMessage");  %>
-			<% } %>
-			
-			<form action = "AdminServlet" method = "post" class = "signup-form" onsubmit="return validatePassword()" 
-			enctype="multipart/form-data">
-			<input type ="hidden" name ="action" value ="register">
-				<div class = "input-box">
-					<label for = "firstName">First name: </label>
-					<input type = "text" id = "firstName" name = "firstName" placeholder = "Enter your first name" required>
-				</div>
-				
-				<div class = "input-box">
-					<label for = "lastName">Last name: </label>
-					<input type = "text" id = "lastName" name = "lastName" placeholder = "Enter your last name" required>
-				</div>
-				
-				<div class = "input-box">
-					<label for = "profileImage">Profile Image: </label>
-					<input type = "file" id = "profileImage" name = "profileImage" accept="image/*" onchange = "previewFile()" required>
-				</div>
-						
-				<div class = "input-box">
-					<label for = "address">Address: </label>
-					<input type = "text" id = "address" name = "address" placeholder = "Enter your address" required>
-				</div>
-				
-				<div class = "input-box">
-					<label for = "email">Email: </label>
-					<input type = "text" id = "email" name = "email" placeholder = "Enter your email" required>
-				</div>
-				
-				<div class = "input-box">
-					<label for = "phoneNumber">Phone number: </label>
-					<input type = "tel" id = "phoneNumber" name = "phoneNumber" placeholder = "Enter your phone number" required>
-				</div>
-				
-				<div class = "input-box">
-					<label for = "password">Password: </label>
-					<input type = "password" id = "password" name = "password" placeholder = "Enter your password" required>
-					<small>Password must contain: uppercase, lowercase, numbers, and 8+ characters</small>
-				</div>
-				
-				<div class = "input-box">
-					<label for = "confirmPassword">Confirm password: </label>
-					<input type = "password" id = "confirmpassword" name = "confirmpassword" placeholder = "Confirm your password" required>
-				</div>
-				
-				<div id = "password-error" style = "color: red; margin-bottom: 15px"></div>
-				
-				<button type ="submit" class ="btn">Sign Up</button>
-				
-				<c:if test="${not empty success}">
-					<p style = "color: green">${success}</p>
-				</c:if>
-				
-					<p class="login-link">Already have an account? <a href="AdminServlet?action=login">Sign In</a></p>
-				
-			</form>
-			
-			
-		</div>
-	</div>
-		
-	
-	<script>
+    <div class = "register-container">
+        <div class = "register-wrapper">
+            <div class = "register-leftside">
+                <img src = "./assets/pahanaEdu_logo.png" alt = ""></img>
+                <h2 class = "title">Welcome to Pahana Edu</h2>
+                <p class = "subtitle">Add a new customer</p>
+            </div>
+            <% if (session.getAttribute("errorMessage") != null) { %>
+                <p style = "color: red;"><%= session.getAttribute("errorMessage") %></p>
+                <% session.removeAttribute("errorMessage");  %>
+            <% } %>
+            
+            <form action = "AdminServlet" method = "post" class = "signup-form" onsubmit="return validatePassword()" 
+            enctype="multipart/form-data">
+            <input type ="hidden" name ="action" value ="register">
+                <div class = "input-box">
+                    <label for = "firstName">First name: </label>
+                    <input type = "text" id = "firstName" name = "firstName" placeholder = "Enter your first name" required>
+                </div>
+                
+                <div class = "input-box">
+                    <label for = "lastName">Last name: </label>
+                    <input type = "text" id = "lastName" name = "lastName" placeholder = "Enter your last name" required>
+                </div>
+                
+                <div class = "input-box">
+                    <label for = "profileImage">Profile Image: </label>
+                    <input type = "file" id = "profileImage" name = "profileImage" accept="image/*" required>
+                </div>
+                        
+                <div class = "input-box">
+                    <label for = "address">Address: </label>
+                    <input type = "text" id = "address" name = "address" placeholder = "Enter your address" required>
+                </div>
+                
+                <div class = "input-box">
+                    <label for = "email">Email: </label>
+                    <input type = "text" id = "email" name = "email" placeholder = "Enter your email" required>
+                </div>
+                
+                <div class = "input-box">
+                    <label for = "phoneNumber">Phone number: </label>
+                    <input type = "tel" id = "phoneNumber" name = "phoneNumber" placeholder = "Enter your phone number" required>
+                </div>
+                
+                <div class = "input-box">
+                    <label for = "password">Password: </label>
+                    <input type = "password" id = "password" name = "password" placeholder = "Enter your password" required>
+                    <small>Password must contain: uppercase, lowercase, numbers, and 8+ characters</small>
+                </div>
+                
+                <div class = "input-box">
+                    <label for = "confirmPassword">Confirm password: </label>
+                    <input type = "password" id = "confirmpassword" name = "confirmpassword" placeholder = "Confirm your password" required>
+                </div>
+                
+                <div id = "password-error" style = "color: red; margin-bottom: 15px"></div>
+                
+                <button type ="submit" class ="btn">Sign Up</button>
+                
+                <c:if test="${not empty success}">
+                    <p style = "color: green">${success}</p>
+                </c:if>
+
+            </form>
+            
+        </div>
+    </div>
+
+    	<a href="AdminServlet?action=dashboard" class="back-to-menu" class="back-to-menu">
+                Back to Main Menu
+            </a>
+    
+    <script>
     function validatePassword() {
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmpassword").value;
@@ -106,25 +124,6 @@
         errorMessage.textContent = "";
         return true;
     }
-    
-    function previewFile() {
-        const preview = document.getElementById('previewImage');
-        const fileInput = document.getElementById('profileImage');
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        
-        reader.onloadend = function() {
-            preview.src = reader.result;
-        }
-        
-        if (file) {
-            reader.readAsDataURL(file);
-        } else {
-            preview.src = "./assets/avatar.png";
-        }
-    }
     </script>
-
-	
 </body>
 </html>

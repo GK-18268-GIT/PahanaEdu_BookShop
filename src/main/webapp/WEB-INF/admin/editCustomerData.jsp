@@ -11,7 +11,23 @@
     <link rel="stylesheet" href="<c:url value='css/editCustomerData.css'/>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .back-to-menu {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .back-to-menu:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -22,6 +38,10 @@
                 ${errorMessage}
             </div>
         </c:if>
+        
+        <a href="${pageContext.request.contextPath}/AdminServlet?action=dashboard" class="back-to-menu">
+            Back to Main Menu
+        </a>
         
         <form action="${pageContext.request.contextPath}/CustomerServlet" method="post">
             <input type="hidden" name="action" value="update">

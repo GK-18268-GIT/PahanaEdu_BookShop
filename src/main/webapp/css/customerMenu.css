@@ -1,0 +1,84 @@
+/* menu.css */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.menu-container h1 {
+    color: #00796b;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.menu-container p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* Navigation Cards */
+.navigate-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* This adds the gap between buttons */
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background-color: #00796b;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 12px;
+}
+
+.button:hover {
+    background-color: #005f56;
+    transform: translateY(-3px);
+}
+
+/* Logout Section */
+.logout-section {
+    margin-top: 20px;
+}
+
+.logout-button {
+    background-color: #e53935;
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #c62828;
+}

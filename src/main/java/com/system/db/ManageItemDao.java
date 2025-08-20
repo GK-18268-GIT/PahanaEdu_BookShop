@@ -48,13 +48,12 @@ public class ManageItemDao {
     }
     
     public boolean updateItem(ManageItem manageItem) throws Exception {
-    	
-    	if(manageItem.getStockQty() > 0) {
-    		manageItem.setStatus("inStock");
-    	} else {
-    		manageItem.setStatus("outStock");
-    	}
-    	
+        if(manageItem.getStockQty() > 0) {
+            manageItem.setStatus("inStock");
+        } else {
+            manageItem.setStatus("outStock");
+        }
+        
         String query = "UPDATE items SET itemName = ?, itemDescription = ?, category = ?, unitPrice = ?, stockQty = ?, itemImage = ?, "
                 + "status = ?, updatedAt = ? WHERE itemId = ?";
         

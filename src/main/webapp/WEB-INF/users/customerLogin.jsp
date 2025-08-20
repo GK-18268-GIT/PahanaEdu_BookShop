@@ -14,7 +14,7 @@
     <div class="login-container">
         <div class="login-wrapper">
             <div class="login-leftside">
-                <img src="${pageContext.request.contextPath}/assets/avatar.png" alt=""></img>
+                <img src="./assets/pahanaEdu_logo.png" alt=""></img>
                 <h2 class="title">Welcome back</h2>
                 <p class="subtitle">Please, Login to continue</p>
             </div>

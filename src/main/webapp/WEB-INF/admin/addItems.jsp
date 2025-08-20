@@ -11,12 +11,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .back-to-menu {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            width: fit-content;
+        }
+        
+        .back-to-menu:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="add-container">
         <div class="add-wrapper">
             <div class="add-leftside">
-                <img src="${pageContext.request.contextPath}/assets/avatar.png" alt=""></img>
+                <img src="${pageContext.request.contextPath}/assets/pahanaEdu_logo.png" alt="">
                 <h2 class="title">Add New Item</h2>
                 <p class="subtitle">Enter Item Details To Add It To The Store</p>
             </div>
@@ -39,9 +57,9 @@
                     <label for="category">Category: </label>
                     <select id="category" name="category" required>
                         <option value="">Select Category: </option>
-                        <option value="stationery">Stationery</option>
+                        <option value="stationery">Educational</option>
                         <option value="textBooks">Text Books</option>
-                        <option value="accessories">Accessories</option>
+                        <option value="accessories">Novel</option>
                     </select>
                 </div>
                 <div class="input-box">
@@ -69,5 +87,9 @@
             </form>
         </div>
     </div>
+    
+    <a href="${pageContext.request.contextPath}/ManageItemServlet?action=itemList" class="back-to-menu">
+        Back to List
+    </a>
 </body>
 </html>

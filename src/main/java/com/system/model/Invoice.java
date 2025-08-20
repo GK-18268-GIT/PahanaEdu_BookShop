@@ -7,17 +7,37 @@ public class Invoice {
 	private String invoiceId;
 	private Timestamp invoiceDate;
 	private double totalAmount;
+	private String customerId;
+	private String accountNumber;
 	private List<CartItem> items;
 	
 	public Invoice() {
 		
 	}
 	
-	public Invoice(String invoiceId, Timestamp invoiceDate, double totalAmount, List<CartItem> items) {
+	public Invoice(String invoiceId, Timestamp invoiceDate, double totalAmount, String customerId, String accountNumber, List<CartItem> items) {
 		this.invoiceId = invoiceId;
 		this.invoiceDate = invoiceDate;
 		this.totalAmount = totalAmount;
+		this.customerId = customerId;
+		this.accountNumber = accountNumber;
 		this.items = items;
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
 	public String getInvoiceId() {

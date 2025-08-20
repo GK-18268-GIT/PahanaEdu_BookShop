@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.system.model.ManageItem;
 import com.system.model.CartItem;
+import com.system.db.CartDao;
 import com.system.db.ManageItemDao;
 
 import javax.servlet.ServletException;
@@ -20,11 +21,15 @@ import javax.servlet.http.HttpSession;
 public class CartServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ManageItemDao manageItemDao;
+    private CartDao cartDao;
 
     @Override
     public void init() {
         manageItemDao = new ManageItemDao();
         System.out.println("[DEBUG] ManageItemDao initialized: " + (manageItemDao != null));
+        
+        cartDao = new CartDao();
+        System.out.println("[DEBUG] CartDao initialized: " + (cartDao != null));
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,6 +47,9 @@ public class CartServlet extends HttpServlet {
                     break;
                 case "remove" :
                     removeItemFromCart(request, response);
+                    break;
+                case "checkout":
+                    processCheckout(request, response);
                     break;
                 default:
                     handleError(request, response, "Invalid action!");
@@ -77,7 +85,7 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private void addItemToCart(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void addItemToCart(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String itemId = request.getParameter("itemId");
         int quantity = 1;
         
@@ -88,7 +96,7 @@ public class CartServlet extends HttpServlet {
         }
         
         if(item.getStockQty() <= 0) {
-        	request.getSession().setAttribute("error", "Item is out of stocl!");
+        	request.getSession().setAttribute("error", "Item is out of stock!");
         	response.sendRedirect(request.getContextPath() + "/ManageItemServlet?action=inStock");
         	return;
         }
@@ -96,29 +104,19 @@ public class CartServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Map<String, CartItem> cart = getCartFromSession(session);
         
-        int itemRequest = quantity;
         if(cart.containsKey(itemId)) {
-        	CartItem cartItem = cart.get(itemId);
-        	itemRequest += cartItem.getQuantity();
+        	request.getSession().setAttribute("error", "Item already in the cart!");
+        	response.sendRedirect(request.getContextPath() + "/ManageItemServlet?action=inStock");
+        	return;
         }
         
-        if(itemRequest  > item.getStockQty()) {
-        	request.getSession().setAttribute("error", "Can not add items more than available stock!");
-        }
-        
-        if(cart.containsKey(itemId)) {
-        	CartItem cartItem = cart.get(itemId);
-        	cartItem.setQuantity(cartItem.getQuantity() + quantity);
-        } else {
-        	cart.put(itemId, new CartItem(item, quantity));
-        }
-        
+        cart.put(itemId, new CartItem(item, quantity));
         session.setAttribute("cart", cart);
         session.setAttribute("successMessage", "Item added successfully!");
         response.sendRedirect(request.getContextPath() + "/ManageItemServlet?action=inStock");
     }
 
-    private void updateCartItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void updateCartItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String itemId = request.getParameter("itemId");
         int quantity;
         
@@ -151,12 +149,15 @@ public class CartServlet extends HttpServlet {
         if(cart.containsKey(itemId)) {
             cart.get(itemId).setQuantity(quantity);
             session.setAttribute("cart", cart);
+            session.setAttribute("seccessMessage", "Quantity update successfullu!");
+        } else {
+        	request.getSession().setAttribute("error", "Item not found!");
         }
         
         response.sendRedirect(request.getContextPath() + "/CartServlet?action=viewMyCart");
     }
 
-    private void viewMyCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void viewMyCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Map<String, CartItem> cart = getCartFromSession(session);
         List<CartItem> cartItems = new ArrayList<>(cart.values());
@@ -171,7 +172,7 @@ public class CartServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/items/cartItems.jsp").forward(request, response);
     }
 
-    private void removeItemFromCart(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void removeItemFromCart(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String itemId = request.getParameter("itemId");
         
         if(itemId == null || itemId.isEmpty()) {
@@ -192,6 +193,28 @@ public class CartServlet extends HttpServlet {
         Map<String, CartItem> cart = (Map<String, CartItem>) session.getAttribute("cart");
         return cart == null ? new HashMap<>() : cart;
     }
+    
+ public void processCheckout(HttpServletRequest request, HttpServletResponse response) 
+         throws ServletException, IOException {
+     HttpSession session = request.getSession();
+     Map<String, CartItem> cart = getCartFromSession(session);
+     List<CartItem> cartItems = new ArrayList<>(cart.values());
+     
+     if(cartItems.isEmpty()) {
+         session.setAttribute("error", "Your cart is empty!");
+         response.sendRedirect(request.getContextPath() + "/CartServlet?action=viewMyCart");
+         return;
+     }
+     
+     double grandTotal = 0;
+     for(CartItem item : cartItems) {
+         grandTotal += item.getTotalPrice();
+     }
+     
+     request.setAttribute("cartItems", cartItems);
+     request.setAttribute("grandTotal", grandTotal);
+     request.getRequestDispatcher("WEB-INF/checkout/payment.jsp").forward(request, response);
+ }
     
     private void handleError(HttpServletRequest request, HttpServletResponse response, String message) 
             throws ServletException, IOException {

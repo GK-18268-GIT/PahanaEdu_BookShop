@@ -1,13 +1,16 @@
 package com.system.db;
 
 import com.system.model.Customer;
+import com.system.model.CustomerAccountDetail;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerDao {
     public Customer getCustomerByEmail(String email, String password) throws Exception {
@@ -129,5 +132,50 @@ public class CustomerDao {
             System.out.println("[ERROR]: Failed to update customer!");
         }
         return false;
+    }
+    
+    public List<CustomerAccountDetail> getCustomerAccountDetails(String customerId) throws Exception {
+        List<CustomerAccountDetail> accountDetails = new ArrayList<>();
+        String query = "SELECT " +
+                      "c.firstName, c.lastName, " +
+                       "c.accountNumber, " +
+                      "i.itemName, cart.quantity, cart.unitPrice, cart.totalPrice, " +
+                      "inv.invoiceId, inv.totalAmount, " +
+                      "p.paymentId, p.paymentMethod " +
+                      "FROM customers c " +
+                      "JOIN invoice inv ON c.customerId = inv.customerId " +
+                      "JOIN cart ON inv.invoiceId = cart.invoiceId " +
+                      "JOIN items i ON cart.itemId = i.itemId " +
+                      "LEFT JOIN payment p ON inv.invoiceId = p.invoiceId " +
+                      "WHERE c.customerId = ? " +
+                      "ORDER BY inv.invoiceId DESC";
+        
+        try(Connection conn = DBConnectionFactory.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)) {
+            
+            ps.setString(1, customerId);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    CustomerAccountDetail detail = new CustomerAccountDetail();
+                    detail.setCustomerName(rs.getString("firstName") + " " + rs.getString("lastName"));
+                    detail.setAccountNumber(rs.getString("accountNumber"));
+                    detail.setItemName(rs.getString("itemName"));
+                    detail.setQuantity(rs.getInt("quantity"));
+                    detail.setUnitPrice(rs.getDouble("unitPrice"));
+                    detail.setTotalAmount(rs.getDouble("totalAmount"));
+                    detail.setTotalPrice(rs.getDouble("totalPrice"));
+                    detail.setInvoiceId(rs.getString("invoiceId"));
+                    detail.setPaymentId(rs.getString("paymentId"));
+                    detail.setPaymentMethod(rs.getString("paymentMethod"));
+                    
+                    accountDetails.add(detail);
+                }
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            System.out.println("[ERROR]: Failed to fetch customer account details!");
+        }
+        return accountDetails;
     }
 }

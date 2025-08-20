@@ -67,9 +67,9 @@
 	
 	<div class ="welcome-container">
 		<h1 class = "header" > Welcome To Pahana Edu Bookishop </h1>
-		<p class = "description">Your trusted ride, anytime, anywhere.</p>
+		<p class = "description">Explore your knowledge</p>
 		<a href = "CustomerServlet?action=login" class ="button">Get Start</a>
-		<a href = "guidelines.jsp" class ="button">Guidelines</a>
+		<a href = "customerGuidelines.jsp" class ="button">Guidelines</a>
 	</div>
 		
 	</body>

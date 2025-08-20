@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 
 import com.system.db.CustomerDao;
+import com.system.db.ManageItemDao;
 import com.system.db.AdminDao;
 import com.system.model.Customer;
+import com.system.model.ManageItem;
+import com.system.model.CustomerAccountDetail;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +24,8 @@ import javax.servlet.http.HttpSession;
 public class CustomerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private CustomerDao customerDao;
-    private AdminDao userDao;
+    private AdminDao adminDao;
+    private ManageItemDao manageItemDao;
     
     @Override
     public void init() {
@@ -32,15 +36,22 @@ public class CustomerServlet extends HttpServlet {
             System.out.println("[DEBUG] CustomerDao initialization failed!");
         }
         
-        userDao  = new AdminDao();
-        if(userDao != null) {
-            System.out.println("[DEBUG] AdminDao initialized: " + (userDao != null));
+        adminDao  = new AdminDao();
+        if(adminDao != null) {
+            System.out.println("[DEBUG] AdminDao initialized: " + (adminDao != null));
         } else {
             System.out.println("[DEBUG] AdminDao initialization failed!");
         }
+        
+        manageItemDao  = new ManageItemDao();
+        if(manageItemDao != null) {
+        	System.out.println("[DEBUG] AdminDao initialized: " + (manageItemDao != null));
+        } else {
+        	System.out.println("[DEBUG] AdminDao initialization failed!");
+        }
     }
     
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         
         if(action == null) {
@@ -62,6 +73,18 @@ public class CustomerServlet extends HttpServlet {
                 case "edit":
                 	showEditForm(request, response);
                 	break;
+                case "profile" :
+                	showProfileForm(request, response);
+                	break;
+                case "store" :
+                	showStoreForm(request, response);
+                	break;
+                case "menu" :
+                	showMenuForm(request, response);
+                	break;
+                case "customerOwnDetails":
+                	showCustomerOwnAccountDetails(request, response);
+                	break;
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action!");
             }
@@ -70,7 +93,7 @@ public class CustomerServlet extends HttpServlet {
         }
     }
     
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         
         if(action == null) {
@@ -114,7 +137,8 @@ public class CustomerServlet extends HttpServlet {
                 System.out.println("[DEBUG] Email: " + customer.getEmail());
                 System.out.println("[DEBUG] Password: " + customer.getPassword());
                 
-                response.sendRedirect(request.getContextPath() + "/ManageItemServlet?action=inStock");
+                request.getRequestDispatcher("/WEB-INF/users/customerMenu.jsp").forward(request, response);
+//                response.sendRedirect(request.getContextPath() + "/ManageItemServlet?action=inStock");
             } else {
                 request.setAttribute("errorMessage", "Invalid email or password!");
                 request.getRequestDispatcher("/WEB-INF/users/customerLogin.jsp").forward(request, response);
@@ -124,7 +148,61 @@ public class CustomerServlet extends HttpServlet {
         }
     }
     
-    private void logoutCustomer(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void showProfileForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	try {
+    		HttpSession session = request.getSession();
+    		Customer customer = (Customer) session.getAttribute("customer");
+    		
+    		if(customer == null) {
+    			response.sendRedirect(request.getContextPath() + "/CustomerServlet?action=login");
+    			return;
+    		}
+    		
+    		customer = customerDao.getCustomerById(customer.getCustomerId());
+    		
+    		request.setAttribute("customer", customer);
+    		request.getRequestDispatcher("/WEB-INF/users/customerProfile.jsp").forward(request, response);
+    		
+    	} catch(Exception e) {
+    		handleError(request, response, "Can't load yor profile!");
+    		return;
+    	}
+    	
+    }
+    
+    private void showCustomerOwnAccountDetails(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("customer");
+        
+        if(customer == null) {
+            response.sendRedirect(request.getContextPath() + "/CustomerServlet?action=login");
+            return;
+        }
+        
+        List<CustomerAccountDetail> accountDetails = customerDao.getCustomerAccountDetails(customer.getCustomerId());
+        request.setAttribute("accountDetails", accountDetails);
+        request.getRequestDispatcher("/WEB-INF/users/customerAccountDetails.jsp").forward(request, response);
+    }
+    
+    public void showStoreForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    	try {
+//    		ManageItemDao manageItemDao = new ManageItemDao();
+    		List<ManageItem> itemList = manageItemDao.getAllItems();
+    		
+    		request.setAttribute("itemList", itemList);
+    		
+    		request.getRequestDispatcher("/WEB-INF/items/displayItems.jsp").forward(request, response);
+    	} catch(Exception e) {
+    		handleError(request, response, "Can't load items in store!");
+    	}
+    }
+    
+    private void showMenuForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    	request.getRequestDispatcher("/WEB-INF/users/customerMenu.jsp").forward(request, response);
+    }
+    
+    
+    public void logoutCustomer(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         if(session != null) {
             session.invalidate();
@@ -186,7 +264,7 @@ public class CustomerServlet extends HttpServlet {
     	
     }
     
-    private String hashPassword(String password) {
+    public String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(password.getBytes());

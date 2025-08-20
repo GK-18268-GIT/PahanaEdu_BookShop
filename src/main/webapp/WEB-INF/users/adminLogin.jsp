@@ -15,7 +15,7 @@
 	<div class = "login-container">
 		<div class = "login-wrapper">
 			<div class = "login-leftside">
-				<img src = "./assets/avatar.png" alt = ""></img>
+				<img src = "./assets/pahanaEdu_logo.png" alt = ""></img>
 				<h2 class = "title">Welcome back</h2>
 				<p class = "subtitle">Please, Login to continue</p>
 			</div>
@@ -41,7 +41,7 @@
 				</div>
 				<button type ="submit" class ="btn">Sign In</button>		
 				
-			<p class="register-link">Don't have an account? <a href="AdminServlet?action=register">Register here</a></p>
+			<p class="register-link">Don't have an account? <a href="AdminServlet?action=adminRegister">Register here</a></p>
 			</form>
 			
 		</div>
